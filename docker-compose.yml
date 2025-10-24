@@ -1,20 +1,68 @@
-version: '3.8'
+version: '3.9'
 
 services:
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: bilet-satin-alma
+    hostname: bilet-platform
+    restart: unless-stopped
+    
+    # Port mapping (host:container)
     ports:
       - "8080:80"
-    volumes:
-      - ./data:/var/www/html/data
-      - ./assets:/var/www/html/assets
+    
+    # Environment variables
     environment:
       - TZ=Europe/Istanbul
-    restart: unless-stopped
+      - PHP_MEMORY_LIMIT=256M
+      - PHP_UPLOAD_MAX_FILESIZE=10M
+      - PHP_POST_MAX_SIZE=10M
+    
+    # Volume mounts for data persistence
+    volumes:
+      # Database persistence (Windows, Linux, macOS compatible)
+      - ./data:/var/www/html/data:rw
+      # Assets for development (optional - comment out for production)
+      - ./assets:/var/www/html/assets:rw
+    
+    # Health check
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
+    
+    # Resource limits (optional but recommended)
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+    
+    # Network configuration
+    networks:
+      - bilet-network
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# Network definition
+networks:
+  bilet-network:
+    driver: bridge
+    name: bilet-network
+
+# Volume definition for explicit management (optional)
+volumes:
+  bilet-data:
+    driver: local
