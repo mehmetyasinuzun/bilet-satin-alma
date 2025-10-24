@@ -1,0 +1,26 @@
+# Database
+database.sqlite
+data/database.sqlite
+
+# Logs
+*.log
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.bak
+
+# Environment
+.env
+.env.local
