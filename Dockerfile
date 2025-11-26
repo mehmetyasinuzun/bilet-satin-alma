@@ -22,6 +22,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     zip \
     unzip \
     curl \
+    dos2unix \
     && docker-php-ext-install -j$(nproc) \
     pdo \
     pdo_sqlite \
@@ -77,6 +78,9 @@ RUN mkdir -p /var/www/html/data && \
 
 # Copy and configure entrypoint script
 COPY --chmod=755 docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN cat /usr/local/bin/docker-entrypoint.sh | tr -d '\r' > /usr/local/bin/docker-entrypoint.sh.new && \
+    mv /usr/local/bin/docker-entrypoint.sh.new /usr/local/bin/docker-entrypoint.sh && \
+    chmod 755 /usr/local/bin/docker-entrypoint.sh
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
@@ -86,7 +90,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
 EXPOSE 80
 
 # Use custom entrypoint
-ENTRYPOINT ["docker-entrypoint.sh"]
+ENTRYPOINT ["/bin/bash", "/usr/local/bin/docker-entrypoint.sh"]
 
 # Default command
 CMD ["apache2-foreground"]
