@@ -1,3 +1,4 @@
+.
 # 🚌 Bilet Satın Alma Platformu
 
 Modern web teknolojileri kullanılarak geliştirilmiş, dinamik ve kullanıcı dostu **otobüs bileti satış platformu**. Docker container yapısı ile her ortamda (Windows, Linux, macOS) kolayca çalıştırılabilir.
