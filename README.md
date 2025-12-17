@@ -134,9 +134,11 @@ src/
 #### 1️⃣ Depoyu Klonlayın
 
 ```bash
-git clone https://github.com/mehmetyasinuzun/bilet-satin-alma.git
+git clone -b OOP-yasin-omer https://github.com/mehmetyasinuzun/bilet-satin-alma.git
 cd bilet-satin-alma
 ```
+
+> **Not:** Bu komut otomatik olarak OOP mimarisi içeren `OOP-yasin-omer` branch'ini indirir.
 
 #### 2️⃣ Docker Container'ı Başlatın
 
