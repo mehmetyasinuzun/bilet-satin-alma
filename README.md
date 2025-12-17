@@ -497,11 +497,14 @@ Bu proje eğitim amaçlı geliştirilmiştir.
 
 ---
 
-## 👨‍💻 Geliştirici
+## 👨‍💻 Geliştiriciler
 
-**Mehmet Yasin Uzun**
-- 🌐 GitHub: [@mehmetyasinuzun](https://github.com/mehmetyasinuzun)
-- 📧 Repository: [bilet-satin-alma](https://github.com/mehmetyasinuzun/bilet-satin-alma)
+| Geliştirici | GitHub |
+|-------------|--------|
+| **Mehmet Yasin UZUN** | [@mehmetyasinuzun](https://github.com/mehmetyasinuzun) |
+| **Ömer Osman KARATAŞ** | [@Karatas0](https://github.com/Karatas0) |
+
+📧 Repository: [bilet-satin-alma](https://github.com/mehmetyasinuzun/bilet-satin-alma)
 
 ---
 
