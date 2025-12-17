@@ -1,0 +1,51 @@
+# Database files
+database.sqlite
+data/database.sqlite
+*.db
+*.sqlite
+*.sqlite3
+
+# Data directory
+data/
+
+# Logs
+*.log
+logs/
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+*~
+
+# IDE and Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.bak
+*.cache
+temp/
+tmp/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Composer
+vendor/
+composer.phar
+composer.lock
+
+# Node modules
+node_modules/
+package-lock.json
+yarn.lock
+
+# Backup files
+*.backup
+backup/

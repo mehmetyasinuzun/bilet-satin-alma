@@ -1,0 +1,84 @@
+version: '3.9'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bilet-satin-alma
+    hostname: bilet-platform
+    restart: unless-stopped
+    
+    # Port mapping (host:container)
+    ports:
+      - "8080:80"
+    
+    # Environment variables
+    environment:
+      - TZ=Europe/Istanbul
+      - PHP_MEMORY_LIMIT=256M
+      - PHP_UPLOAD_MAX_FILESIZE=10M
+      - PHP_POST_MAX_SIZE=10M
+    
+    # Volume mounts for data persistence and development
+    volumes:
+      # Database persistence (Windows, Linux, macOS compatible)
+      - ./data:/var/www/html/data:rw
+      # Assets for development
+      - ./assets:/var/www/html/assets:rw
+      # Source code mount for development (live reload)
+      - ./src:/var/www/html/src:rw
+      - ./config.php:/var/www/html/config.php:rw
+      - ./index.php:/var/www/html/index.php:rw
+      - ./login.php:/var/www/html/login.php:rw
+      - ./register.php:/var/www/html/register.php:rw
+      - ./logout.php:/var/www/html/logout.php:rw
+      - ./ticket_purchase.php:/var/www/html/ticket_purchase.php:rw
+      - ./my_tickets.php:/var/www/html/my_tickets.php:rw
+      - ./cancel_ticket.php:/var/www/html/cancel_ticket.php:rw
+      - ./generate_pdf.php:/var/www/html/generate_pdf.php:rw
+      - ./user_dashboard.php:/var/www/html/user_dashboard.php:rw
+      - ./admin_dashboard.php:/var/www/html/admin_dashboard.php:rw
+      - ./company_admin_dashboard.php:/var/www/html/company_admin_dashboard.php:rw
+      - ./setup_database.php:/var/www/html/setup_database.php:rw
+      - ./includes:/var/www/html/includes:rw
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    
+    # Resource limits (optional but recommended)
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+    
+    # Network configuration
+    networks:
+      - bilet-network
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# Network definition
+networks:
+  bilet-network:
+    driver: bridge
+    name: bilet-network
+
+# Volume definition for explicit management (optional)
+volumes:
+  bilet-data:
+    driver: local

@@ -1,0 +1,95 @@
+# Production Docker Compose Configuration
+# Use: docker-compose -f docker-compose.prod.yml up -d
+
+version: '3.9'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bilet-satin-alma-prod
+    hostname: bilet-platform-prod
+    restart: always
+    
+    # Port mapping
+    ports:
+      - "80:80"
+    
+    # Environment variables for production
+    environment:
+      - TZ=Europe/Istanbul
+      - PHP_MEMORY_LIMIT=512M
+      - PHP_UPLOAD_MAX_FILESIZE=20M
+      - PHP_POST_MAX_SIZE=20M
+      - PHP_DISPLAY_ERRORS=Off
+      - APACHE_LOG_LEVEL=warn
+    
+    # Volume mounts (read-only where possible)
+    volumes:
+      - ./data:/var/www/html/data:rw
+      - ./logs:/var/log/apache2:rw
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    
+    # Resource limits for production
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 1G
+        reservations:
+          cpus: '1.0'
+          memory: 512M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    
+    # Network configuration
+    networks:
+      - bilet-network-prod
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+        compress: "true"
+    
+    # Security options
+    security_opt:
+      - no-new-privileges:true
+    
+    # Read-only root filesystem (except volumes)
+    # read_only: true
+    # tmpfs:
+    #   - /tmp
+    #   - /var/tmp
+
+# Network definition
+networks:
+  bilet-network-prod:
+    driver: bridge
+    name: bilet-network-prod
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/16
+
+# Volume definition
+volumes:
+  bilet-data-prod:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data
